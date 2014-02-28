@@ -53,44 +53,6 @@ MainWindow::MainWindow(QWidget *parent) :
     tempPath = "C:\\myFMgTemp\\";
     ui->lineEdit->setText(path);
     displayData();
-   /* vecCurrentFolder = new QVector<WIN32_FIND_DATA>;
-    vecCurrentFile = new QVector<WIN32_FIND_DATA>;
-    mod.CreateTree(vecCurrentFolder,vecCurrentFile,L"c:\*");
-    ui->tableWidget->setRowCount(vecCurrentFolder->size()+vecCurrentFile->size());
-    for(int i = 0;i<vecCurrentFolder->size();i++){
-        ui->tableWidget->setItem(i,0,new QTableWidgetItem(QString::fromWCharArray(vecCurrentFolder->at(i).cFileName)));
-        FILETIME dtime = vecCurrentFolder->at(i).ftLastAccessTime;
-        if(FileTimeToLocalFileTime(&dtime,&ftime))
-           if(FileTimeToSystemTime(&ftime,&stime))
-            ui->tableWidget->setItem(i,1,new QTableWidgetItem(QString::number(stime.wYear)+"-"+QString::number(stime.wMonth)+"-"+QString::number(stime.wDay)+" "+QString::number(stime.wHour)+":"+QString::number(stime.wMinute)+":"+QString::number(stime.wSecond)));
-    }
-    for(int i = 0;i<vecCurrentFile->size();i++){
-        ui->tableWidget->setItem(i+vecCurrentFolder->size(),0,new QTableWidgetItem(QString::fromWCharArray(vecCurrentFile->at(i).cFileName)));
-        FILETIME dtime = vecCurrentFile->at(i).ftLastAccessTime;
-        if(FileTimeToLocalFileTime(&dtime,&ftime))
-           if(FileTimeToSystemTime(&ftime,&stime))
-            ui->tableWidget->setItem(i+vecCurrentFolder->size(),1,new QTableWidgetItem(QString::number(stime.wYear)+"-"+QString::number(stime.wMonth)+"-"+QString::number(stime.wDay)+" "+QString::number(stime.wHour)+":"+QString::number(stime.wMinute)+":"+QString::number(stime.wSecond)));
-    }
-    //mod.doAllLink(QString("c:\\"));
-    for(int i = 0;i<ui->tableWidget->rowCount();i++)
-        ui->tableWidget->setRowHeight(i,16);*/
-
-
-
-
-    /*SHFILEOPSTRUCT fos;
-    fos.hwnd = 0;
-    fos.wFunc = FO_COPY;
-    fos.pFrom = L"c:\\ICQ";
-    fos.pTo = L"c:\\intel";
-    std::cout<<(path.left(path.length()-1)+"aer"+pathCopy).toStdString()<<std::endl;
-    fos.fFlags = FOF_ALLOWUNDO|FOF_NOCONFIRMATION|FOF_NOCONFIRMMKDIR;
-    SHFileOperation(&fos);*/
-
-    //mod.CreateLink(L"c:\Finish.log","c:\\Sites\\ttt.lnk",L"param");
-
-   // HRESULT res = mod.CreateLink(L"","",L"");
-
 }
 
 void MainWindow::addToMenu(QString capt,int slot,QString key){
