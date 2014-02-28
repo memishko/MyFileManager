@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+п»ї#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 //void CopyFolder(CSTRING strFrom, CString strTo);
@@ -28,13 +28,13 @@ MainWindow::MainWindow(QWidget *parent) :
     QPushButton *popupButton = new QPushButton/*(tr("Pop&up Button"))*/;
     menu = new QMenu(this);
 
-    addToMenu(QString::fromLocal8Bit("копировать"),1,"ctrl+c");
-    addToMenu(QString::fromLocal8Bit("вставить"),2,"ctrl+v");
-    addToMenu(QString::fromLocal8Bit("удалить"),3,"del");
-    addToMenu(QString::fromLocal8Bit("вырезать"),4,"ctrl+x");
-    addToMenu(QString::fromLocal8Bit("переименовать"),5,"");
-    addToMenu(QString::fromLocal8Bit("создать папку"),6,"");
-    addToMenu(QString::fromLocal8Bit("создать файл"),7,"");
+    addToMenu(QString::fromLocal8Bit("РєРѕРїРёСЂРѕРІР°С‚СЊ"),1,"ctrl+c");
+    addToMenu(QString::fromLocal8Bit("РІСЃС‚Р°РІРёС‚СЊ"),2,"ctrl+v");
+    addToMenu(QString::fromLocal8Bit("СѓРґР°Р»РёС‚СЊ"),3,"del");
+    addToMenu(QString::fromLocal8Bit("РІС‹СЂРµР·Р°С‚СЊ"),4,"ctrl+x");
+    addToMenu(QString::fromLocal8Bit("РїРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ"),5,"");
+    addToMenu(QString::fromLocal8Bit("СЃРѕР·РґР°С‚СЊ РїР°РїРєСѓ"),6,"");
+    addToMenu(QString::fromLocal8Bit("СЃРѕР·РґР°С‚СЊ С„Р°Р№Р»"),7,"");
 
     ind = 0;
     DWORD dr = GetLogicalDrives();
@@ -81,10 +81,10 @@ QString toNormTime(FILETIME dtime){
                    +QString::number(stime.wHour)+":"+QString::number(stime.wMinute)+":"+QString::number(stime.wSecond);
 }
 
-void MainWindow::displayData(){//построение дерева папок и файлов по входному пути
+void MainWindow::displayData(){//РїРѕСЃС‚СЂРѕРµРЅРёРµ РґРµСЂРµРІР° РїР°РїРѕРє Рё С„Р°Р№Р»РѕРІ РїРѕ РІС…РѕРґРЅРѕРјСѓ РїСѓС‚Рё
     if(path.trimmed()=="*") path = "C:\\*";
     if(!mod.folderExists(path.left(path.length()-2),"")){
-        QMessageBox::warning(this,"error",QString::fromLocal8Bit("неверно указано имя папки"));
+        QMessageBox::warning(this,"error",QString::fromLocal8Bit("РЅРµРІРµСЂРЅРѕ СѓРєР°Р·Р°РЅРѕ РёРјСЏ РїР°РїРєРё"));
         path = path.left(path.length() - path.lastIndexOf("\\")+1);
         return ;
     }
@@ -94,7 +94,7 @@ void MainWindow::displayData(){//построение дерева папок и файлов по входному пу
     ui->tableWidget->setRowCount(vecCurrentFolder->size()+vecCurrentFile->size());
     for(int i = 0;i<vecCurrentFolder->size();i++){
         ui->tableWidget->setItem(i,1,new QTableWidgetItem(QString::fromWCharArray(vecCurrentFolder->at(i).cFileName)));
-        ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::fromLocal8Bit("папка")));    
+        ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::fromLocal8Bit("РїР°РїРєР°")));    
            // ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::number(stime.wYear)+"-"+QString::number(stime.wMonth)+"-"+QString::number(stime.wDay)+" "+QString::number(stime.wHour)+":"+QString::number(stime.wMinute)+":"+QString::number(stime.wSecond)));
         ui->tableWidget->setItem(i,3,new QTableWidgetItem(toNormTime(vecCurrentFolder->at(i).ftLastAccessTime)));
         ui->tableWidget->setItem(i,0,new QTableWidgetItem(QPixmap(":/folder"),0));
@@ -106,7 +106,7 @@ void MainWindow::displayData(){//построение дерева папок и файлов по входному пу
                 ui->tableWidget->setItem(i+vecCurrentFolder->size(),2,new QTableWidgetItem(name.right(name.length()-name.lastIndexOf(".")-1)));
                 ui->tableWidget->setItem(i+vecCurrentFolder->size(),0,new QTableWidgetItem(QPixmap(":/"+name.right(name.length()-name.lastIndexOf(".")-1)),0));
             }else{
-                ui->tableWidget->setItem(i+vecCurrentFolder->size(),2,new QTableWidgetItem(QString::fromLocal8Bit("файл")));
+                ui->tableWidget->setItem(i+vecCurrentFolder->size(),2,new QTableWidgetItem(QString::fromLocal8Bit("С„Р°Р№Р»")));
                 ui->tableWidget->setItem(i+vecCurrentFolder->size(),0,new QTableWidgetItem(QPixmap(":/no"),0));
             }
             ui->tableWidget->setItem(i+vecCurrentFolder->size(),1,new QTableWidgetItem(QString::fromWCharArray(vecCurrentFile->at(i).cFileName)));
@@ -150,7 +150,7 @@ void MainWindow::findNextFolder(int i,int j){
 }
 
 void MainWindow::myOpenFile(int i, int j){
-    if(ShellExecuteW(0,L"open",(path+QString::fromWCharArray(vecCurrentFile->at(i-vecCurrentFolder->size()).cFileName)).utf16(),0,0,SW_SHOWNORMAL)!=INVALID_HANDLE_VALUE) std::cout<<"туц";
+    if(ShellExecuteW(0,L"open",(path+QString::fromWCharArray(vecCurrentFile->at(i-vecCurrentFolder->size()).cFileName)).utf16(),0,0,SW_SHOWNORMAL)!=INVALID_HANDLE_VALUE) std::cout<<"С‚СѓС†";
 }
 
 void MainWindow::toRootDir(){
@@ -180,7 +180,7 @@ void MainWindow::on_action_2_triggered(){
   //  ui->action_2->setEnabled(true);
    // WIN32_FIND_DATA structFD;
     if(path.indexOf("*")!=-1) path.remove(path.indexOf("*"),1);    
-   // std::cout<<"сейчас... "<<path.toStdString()<<std::endl;*/
+   // std::cout<<"СЃРµР№С‡Р°СЃ... "<<path.toStdString()<<std::endl;*/
             if(copy)
                 mod.doSomeFileAction(FO_COPY,pathCopy,path);
             else
@@ -201,7 +201,7 @@ void MainWindow::on_action_triggered(){
 
 }
 
-void MainWindow::on_action_4_triggered()//удалить
+void MainWindow::on_action_4_triggered()//СѓРґР°Р»РёС‚СЊ
 {
     QString tmp = path;
     if(ui->tableWidget->selectionModel()->currentIndex().row()<vecCurrentFolder->size())
@@ -230,8 +230,8 @@ void MainWindow::on_action_6_triggered(){
     else
         tmp += QString::fromWCharArray(vecCurrentFile->at(ui->tableWidget->selectionModel()->currentIndex().row()-vecCurrentFolder->size()).cFileName);
     QString str = QInputDialog::getText( 0,
-                                         QString::fromLocal8Bit("переименовать"),
-                                         QString::fromLocal8Bit("Новое имя:"),
+                                         QString::fromLocal8Bit("РїРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ"),
+                                         QString::fromLocal8Bit("РќРѕРІРѕРµ РёРјСЏ:"),
                                          QLineEdit::Normal,
                                          tmp,
                                          &bOk
@@ -252,11 +252,11 @@ void MainWindow::toFolder(){
     displayData();
 }
 
-void MainWindow::on_action_9_triggered(){//создать файл
+void MainWindow::on_action_9_triggered(){//СЃРѕР·РґР°С‚СЊ С„Р°Р№Р»
     bool bOk;
     QString str = QInputDialog::getText( 0,
-                                         QString::fromLocal8Bit("Создать файл"),
-                                         QString::fromLocal8Bit("имя:"),
+                                         QString::fromLocal8Bit("РЎРѕР·РґР°С‚СЊ С„Р°Р№Р»"),
+                                         QString::fromLocal8Bit("РёРјСЏ:"),
                                          QLineEdit::Normal,
                                          "",
                                          &bOk
@@ -276,13 +276,13 @@ void MainWindow::on_action_9_triggered(){//создать файл
     displayData();
 }
 
-void MainWindow::on_action_8_triggered(){//создать папку
+void MainWindow::on_action_8_triggered(){//СЃРѕР·РґР°С‚СЊ РїР°РїРєСѓ
     bool bOk;
     QString str = QInputDialog::getText( 0,
-                                         QString::fromLocal8Bit("Создать папку"),
-                                         QString::fromLocal8Bit("имя:"),
+                                         QString::fromLocal8Bit("РЎРѕР·РґР°С‚СЊ РїР°РїРєСѓ"),
+                                         QString::fromLocal8Bit("РёРјСЏ:"),
                                          QLineEdit::Normal,
-                                         QString::fromLocal8Bit("новая папка"),
+                                         QString::fromLocal8Bit("РЅРѕРІР°СЏ РїР°РїРєР°"),
                                          &bOk
                                         );
     if(bOk)
@@ -290,7 +290,7 @@ void MainWindow::on_action_8_triggered(){//создать папку
             if(str.right(1)!="\\") str += "\\";
                 if(!CreateDirectory((path + str).utf16(),0))
                     if(GetLastError()!=ERROR_ALREADY_EXISTS)
-                        int err=  QMessageBox::warning(this,"error",QString::fromLocal8Bit("неверно указано имя папки"));
+                        int err=  QMessageBox::warning(this,"error",QString::fromLocal8Bit("РЅРµРІРµСЂРЅРѕ СѓРєР°Р·Р°РЅРѕ РёРјСЏ РїР°РїРєРё"));
     }
     path += "*";
     displayData();
@@ -308,8 +308,8 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
 void MainWindow::on_action_temp_triggered(){
     bool bOk;
     QString str = QInputDialog::getText( 0,
-                                         QString::fromLocal8Bit("изменить temp"),
-                                         QString::fromLocal8Bit("текущий: ")+tempPath+QString::fromLocal8Bit("\nновый:"),
+                                         QString::fromLocal8Bit("РёР·РјРµРЅРёС‚СЊ temp"),
+                                         QString::fromLocal8Bit("С‚РµРєСѓС‰РёР№: ")+tempPath+QString::fromLocal8Bit("\nРЅРѕРІС‹Р№:"),
                                          QLineEdit::Normal,
                                          path,
                                          &bOk
@@ -319,7 +319,7 @@ void MainWindow::on_action_temp_triggered(){
         if(tempPath.right(1)!="\\") tempPath += "\\";
         if(!CreateDirectory(tempPath.utf16(),0))
             if(GetLastError()!=ERROR_ALREADY_EXISTS)
-                int err=  QMessageBox::warning(this,"error",QString::fromLocal8Bit("неверно указано имя папки"));
+                int err=  QMessageBox::warning(this,"error",QString::fromLocal8Bit("РЅРµРІРµСЂРЅРѕ СѓРєР°Р·Р°РЅРѕ РёРјСЏ РїР°РїРєРё"));
         path += "*";
         displayData();
     }
