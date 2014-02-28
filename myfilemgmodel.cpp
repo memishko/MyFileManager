@@ -20,7 +20,6 @@ void MyFileMgModel::CreateTree(QVector<WIN32_FIND_DATA> *vecFolder, QVector<WIN3
             }
         }while(FindNextFile(hFind,&structFD)!=0);
     FindClose(hFind);
- //   CloseHandle(hFind);
     //for(int i=0;i<vec.size();i++)
       //  std::cout<<vec.at(i).toStdString()<<std::endl;
    // return vec;
@@ -86,8 +85,6 @@ void MyFileMgModel::toFolder(QString name, QString path,QString tempPath){
     QString pathLink = (path+name);
     pathLink.replace("\\",".,");
     pathLink.remove(1,1);
-   // CreateFile(QString(QString("c:\\myProg\\")+type+"\\"+pathLink+".lnk").utf16(),GENERIC_READ,0,NULL,CREATE_NEW,FILE_ATTRIBUTE_NORMAL,NULL);
-   // CoInitialize(0);
   //  std::cout<<(path+QString::fromWCharArray(name)).toStdString()<< " путь"<<std::endl;
     CreateLink((path+name).utf16(),(LPSTR)QString(tempPath+type+"\\"+pathLink+QString(".lnk")).toLocal8Bit().data(),L"");
         //std::cout<<(path.left(path.length()-1)+QString::fromWCharArray(name)).toStdString()<<"файл"<<std::endl;
@@ -100,10 +97,6 @@ void MyFileMgModel::doAllLink(QString path,QString tempPath){
     WIN32_FIND_DATA structFD;
     numFiles = 0;
     HANDLE hFind;
-   // QString thisPath = path;
-   // CreateLink(L"c:\\Finish.log","c:\\myProg\\rnd\\link1000.lnk",L"");
-   // QVector<WIN32_FIND_DATA> vec;// = new QVector<QString>;
-   // QString path = "c:\\*";
 
 
     hFind = FindFirstFile((path+"*").utf16(),&structFD);

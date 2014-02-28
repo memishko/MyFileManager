@@ -92,14 +92,9 @@ void MainWindow::displayData(){//построение дерева папок и файлов по входному пу
     vecCurrentFile = new QVector<WIN32_FIND_DATA>;
     mod.CreateTree(vecCurrentFolder,vecCurrentFile,(LPCWSTR)path.utf16());
     ui->tableWidget->setRowCount(vecCurrentFolder->size()+vecCurrentFile->size());
-    //FILETIME ftime;
-    //SYSTEMTIME stime;
     for(int i = 0;i<vecCurrentFolder->size();i++){
         ui->tableWidget->setItem(i,1,new QTableWidgetItem(QString::fromWCharArray(vecCurrentFolder->at(i).cFileName)));
-        ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::fromLocal8Bit("папка")));
-     //   FILETIME dtime = vecCurrentFolder->at(i).ftLastAccessTime;
-     //   if(FileTimeToLocalFileTime(&dtime,&ftime))
-     //      if(FileTimeToSystemTime(&ftime,&stime))
+        ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::fromLocal8Bit("папка")));    
            // ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::number(stime.wYear)+"-"+QString::number(stime.wMonth)+"-"+QString::number(stime.wDay)+" "+QString::number(stime.wHour)+":"+QString::number(stime.wMinute)+":"+QString::number(stime.wSecond)));
         ui->tableWidget->setItem(i,3,new QTableWidgetItem(toNormTime(vecCurrentFolder->at(i).ftLastAccessTime)));
         ui->tableWidget->setItem(i,0,new QTableWidgetItem(QPixmap(":/folder"),0));
@@ -120,11 +115,7 @@ void MainWindow::displayData(){//построение дерева папок и файлов по входному пу
                 ui->tableWidget->setItem(i+vecCurrentFolder->size(),1,new QTableWidgetItem(name.right(name.length()-name.lastIndexOf(".,")-2)));
                 name.replace(".,","\\");
                 ui->tableWidget->setItem(i+vecCurrentFolder->size(),2,new QTableWidgetItem(name));
-            }
-    //    }
-       // FILETIME dtime = vecCurrentFile->at(i).ftLastAccessTime;
-       // if(FileTimeToLocalFileTime(&dtime,&ftime))
-      //     if(FileTimeToSystemTime(&ftime,&stime))
+            }    
           //  ui->tableWidget->setItem(i+vecCurrentFolder->size(),2,new QTableWidgetItem(QString::number(stime.wYear)+"-"+QString::number(stime.wMonth)+"-"+QString::number(stime.wDay)+" "+QString::number(stime.wHour)+":"+QString::number(stime.wMinute)+":"+QString::number(stime.wSecond)));
         ui->tableWidget->setItem(i+vecCurrentFolder->size(),3,new QTableWidgetItem(toNormTime(vecCurrentFile->at(i).ftLastAccessTime)));
     }
@@ -154,36 +145,7 @@ void MainWindow::findNextFolder(int i,int j){
         if(path.right(4)=="..\\*"){
             path.remove(path.length()-5,4);
             path.remove(path.lastIndexOf("\\")+1,path.length()-path.lastIndexOf("\\")-2);
-        }
-       /* vecCurrentFolder = new QVector<WIN32_FIND_DATA>;
-        vecCurrentFile = new QVector<WIN32_FIND_DATA>;
-        mod.CreateTree(vecCurrentFolder,vecCurrentFile,(LPCWSTR)path.utf16());
-        ui->tableWidget->setRowCount(vecCurrentFolder->size()+vecCurrentFile->size());
-        FILETIME ftime;
-        SYSTEMTIME stime;
-        for(int i = 0;i<vecCurrentFolder->size();i++){
-            ui->tableWidget->setItem(i,0,new QTableWidgetItem(QString::fromWCharArray(vecCurrentFolder->at(i).cFileName)));
-            FILETIME dtime = vecCurrentFolder->at(i).ftLastAccessTime;
-            if(FileTimeToLocalFileTime(&dtime,&ftime))
-               if(FileTimeToSystemTime(&ftime,&stime))
-                ui->tableWidget->setItem(i,1,new QTableWidgetItem(QString::number(stime.wYear)+"-"+QString::number(stime.wMonth)+"-"+QString::number(stime.wDay)+" "+QString::number(stime.wHour)+":"+QString::number(stime.wMinute)+":"+QString::number(stime.wSecond)));
-        }
-        for(int i = 0;i<vecCurrentFile->size();i++){
-            if((path.indexOf("c:\\myProg\\")!=-1)||(path.indexOf("c:\\myprog\\")!=-1)){
-                QString name = QString::fromWCharArray(vecCurrentFile->at(i).cFileName);
-                name = name.left(name.length()-4);
-                ui->tableWidget->setItem(i+vecCurrentFolder->size(),0,new QTableWidgetItem(name.right(name.length()-name.lastIndexOf(".,")-2)));
-            }else
-                ui->tableWidget->setItem(i+vecCurrentFolder->size(),0,new QTableWidgetItem(QString::fromWCharArray(vecCurrentFile->at(i).cFileName)));
-            FILETIME dtime = vecCurrentFile->at(i).ftLastAccessTime;
-            if(FileTimeToLocalFileTime(&dtime,&ftime))
-               if(FileTimeToSystemTime(&ftime,&stime))
-                ui->tableWidget->setItem(i+vecCurrentFolder->size(),1,new QTableWidgetItem(QString::number(stime.wYear)+"-"+QString::number(stime.wMonth)+"-"+QString::number(stime.wDay)+" "+QString::number(stime.wHour)+":"+QString::number(stime.wMinute)+":"+QString::number(stime.wSecond)));
-        }
-    path = path.left(path.length()-1);
-    ui->lineEdit->setText(path);
-    for(int i = 0;i<ui->tableWidget->rowCount();i++)
-        ui->tableWidget->setRowHeight(i,16);*/
+        }       
     displayData();
 }
 
@@ -205,28 +167,7 @@ void MainWindow::doLink(){
     }
     ui->pushButton_2->setVisible(false);
     mod.doAllLink(ui->lineEdit->text(),tempPath);
-    path = tempPath+"*";
-   // path = "c:\\myprog\\*";
-   /* TCHAR lp[1000];
-    GetModuleFileName(0, lp, 1000 );
-    path = QString::fromWCharArray(lp);
-   /* vecCurrentFolder = new QVector<WIN32_FIND_DATA>;
-    vecCurrentFile = new QVector<WIN32_FIND_DATA>;
-    mod.CreateTree(vecCurrentFolder,vecCurrentFile,L"c:\myprog\\*");
-    ui->tableWidget->setRowCount(vecCurrentFolder->size()+vecCurrentFile->size());
-    for(int i = 0;i<vecCurrentFolder->size();i++){
-        QString name = QString::fromWCharArray(vecCurrentFolder->at(i).cFileName);
-        std::cout<<(name.right(name.length() - name.lastIndexOf(".,"))).toStdString()<<"ra"<<std::endl;
-        ui->tableWidget->setItem(i,0,new QTableWidgetItem(name.right(name.length() - name.lastIndexOf(".,"))));
-    }
-    for(int i = 0;i<vecCurrentFile->size();i++){
-        QString name = QString::fromWCharArray(vecCurrentFile->at(i).cFileName);
-        std::cout<<(name.right(name.length() - name.lastIndexOf(".,"))).toStdString()<<"ra"<<std::endl;
-        ui->tableWidget->setItem(i+vecCurrentFolder->size(),0,new QTableWidgetItem(name.right(name.length()-name.lastIndexOf(".,"))));
-    }
-    for(int i = 0;i<ui->tableWidget->rowCount();i++)
-        ui->tableWidget->setRowHeight(i,16);
-    ui->lineEdit->setText("c:\\myProg\\");*/
+    path = tempPath+"*";   
     displayData();
 
 }
@@ -238,38 +179,7 @@ void MainWindow::on_action_3_triggered(){
 void MainWindow::on_action_2_triggered(){
   //  ui->action_2->setEnabled(true);
    // WIN32_FIND_DATA structFD;
-    if(path.indexOf("*")!=-1) path.remove(path.indexOf("*"),1);
-  //  ui->tableWidget->selectedIndexes()
-   /* if(file)
-        if(CopyFile(pathCopy.utf16(),(path+pathCopy.right(pathCopy.length()-pathCopy.lastIndexOf("\\"))).utf16(),true)){
-            path+pathCopy.right(pathCopy.length()-pathCopy.lastIndexOf("\\")).toWCharArray(structFD.cFileName);
-            vecCurrentFile->append(structFD);
-        }
-    else
-      //  QString tmp = "c:\\ICQ";
-      //  tmp += '\0';
-       /* pathCopy += '\0';
-        SHFILEOPSTRUCT fos;
-        fos.hwnd = 0;
-        if(copy)
-            fos.wFunc = FO_COPY;
-        else
-            fos.wFunc = FO_MOVE;
-      //  fos.pTo = (path.left(path.length()-1)).utf16();
-        fos.pTo = path.utf16();
-        fos.pFrom = (pathCopy).utf16();
-       // fos.pFrom += '\0\0';
-      //  fos.pFrom = L"c:\\ICQ";
-        //fos.pTo = L"c:\\Intel";
-      //  std::cout<<"c:\\intel";
-        std::cout<<pathCopy.toStdString()<<" ++"<<std::endl;
-        fos.fFlags = FOF_ALLOWUNDO|FOF_NOCONFIRMATION;
-        if(SHFileOperation(&fos)){
-            pathCopy.toWCharArray(structFD.cFileName);
-            vecCurrentFolder->append(structFD);
-        }
-       // CopyFolder(pathCopy,path);
-    }
+    if(path.indexOf("*")!=-1) path.remove(path.indexOf("*"),1);    
    // std::cout<<"сейчас... "<<path.toStdString()<<std::endl;*/
             if(copy)
                 mod.doSomeFileAction(FO_COPY,pathCopy,path);
